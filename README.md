@@ -12,8 +12,8 @@
 > - Axios
 
 - Backend
-> Typescript
-> Node 
-> Prisma
-> Mysql
-> Express
+> - Typescript
+> - Node 
+> - Prisma
+> - Mysql
+> - Express
