@@ -1,0 +1,28 @@
+.header {
+    font-family: 'Lobster', cursive;
+    font-size: 2rem;
+    display: flex;
+    
+    grid-area: header;
+    background-color: #3f4b5e;
+    border-bottom: 1px solid #fff;
+    letter-spacing: 1px;
+}
+
+.title-app {
+    flex: 8;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.saldo{
+    font-family: 'Roboto', sans-serif;
+    flex: 2;
+    padding: 10px;
+    height: 100%;
+}
+
+.logo {
+    flex: 2;
+}

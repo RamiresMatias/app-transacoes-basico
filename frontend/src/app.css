@@ -1,0 +1,29 @@
+.app {
+  background-color: #282c34;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.layout {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-areas: 
+  'header header'
+  'sidebar main'
+  'sidebar main'
+  'sidebar main';
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 80px 1fr;
+}
+
+
+
+@import url('../src/styles/header.css');
+@import url('../src/styles/nav.css');
+@import url('../src/styles/content.css');
