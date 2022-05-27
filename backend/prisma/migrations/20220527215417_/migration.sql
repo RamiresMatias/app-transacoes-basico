@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `user` (
+CREATE TABLE `users` (
     `id` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE `user` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `user_releases` (
+CREATE TABLE `users_releases` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` VARCHAR(191) NOT NULL,
     `transaction_id` VARCHAR(191) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `transaction` (
     `date` DATETIME(3) NOT NULL,
     `type` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
-    `value` DECIMAL(65, 30) NOT NULL,
+    `value` DECIMAL(10, 2) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status` BOOLEAN NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE `transaction` (
 -- CreateTable
 CREATE TABLE `balances` (
     `id` VARCHAR(191) NOT NULL,
-    `value` DECIMAL(65, 30) NOT NULL,
+    `value` DECIMAL(10, 2) NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -45,4 +45,4 @@ CREATE TABLE `balances` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `balances` ADD CONSTRAINT `balances_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `balances` ADD CONSTRAINT `balances_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

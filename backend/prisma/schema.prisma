@@ -8,7 +8,7 @@ datasource db {
 }
 
 
-model User { 
+model Users { 
   id            String       @id    @default(uuid())
   username      String
   email         String
@@ -16,17 +16,17 @@ model User {
   status        Boolean
   balances      Balances[]
 
-  @@map("user")
+  @@map("users")
 }
 
-model UserReleases {
+model UsersReleases {
   id              Int           @id    @default(autoincrement())
   user_id         String      
   transaction_id  String
   operation_type  String
   created_at      DateTime      @default(now())
 
-  @@map("user_releases")
+  @@map("users_releases")
 }
 
 model Transaction { 
@@ -34,7 +34,7 @@ model Transaction {
   date          DateTime     
   type          String       
   description   String
-  value         Decimal
+  value         Decimal       @db.Decimal(10, 2)
   created_at    DateTime      @default(now())
   updated_at    DateTime      @default(now())
   status        Boolean
@@ -44,9 +44,9 @@ model Transaction {
 
 model Balances {
   id            String        @id    @default(uuid())
-  value         Decimal
+  value         Decimal       @db.Decimal(10, 2)
   user_id       String 
-  user          User          @relation(fields: [user_id], references: [id])
+  user          Users          @relation(fields: [user_id], references: [id])
   created_at    DateTime      @default(now())
 
   @@map("balances")

@@ -47,7 +47,7 @@ export class TransactionsServices {
 
     async createUserRelease(idTransaction: string, type: Operation, userId: string): Promise<UserReleaseProps>{
         try {
-            const userRelease = await prismaClient.UserReleases.create({
+            const userRelease = await prismaClient.UsersReleases.create({
                 data: {
                     user_id: userId,
                     transaction_id: idTransaction,

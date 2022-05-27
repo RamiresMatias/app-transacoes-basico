@@ -1,5 +1,6 @@
 import { prismaClient } from "../database/prismaClient"
 import bcrypt from 'bcrypt'
+import { BalancesServices } from "./BalancesServices"
 
 type UserProps = {
     id?: string
@@ -22,11 +23,13 @@ export class UserServices {
             newUser.password = this.excryptedPassword(newUser.password)
             delete newUser.confirmPassword
 
-            const userSave = await prismaClient.user.create({
+            const userSave = await prismaClient.users.create({
                 data: {
                     ...newUser,
                 }
             })
+
+            await this.createBalance(userSave.id)
 
             return userSave
         } catch (error) {
@@ -36,7 +39,7 @@ export class UserServices {
 
     async update(dataUser: UserProps, id: string): Promise<UserProps> {   
         try {
-            const userUpdated = await prismaClient.user.update({
+            const userUpdated = await prismaClient.users.update({
                 data: {
                     ...dataUser
                 },
@@ -52,7 +55,7 @@ export class UserServices {
 
     async findById(id: string): Promise<UserProps> {
         try {
-            return prismaClient.user.findFirst({
+            return prismaClient.users.findFirst({
                 where:{
                     id,
                 }
@@ -64,7 +67,8 @@ export class UserServices {
 
     async findByEmail(email: string): Promise<UserProps> {
         try {
-            return prismaClient.user.findFirst({
+
+            return prismaClient.users.findFirst({
                 where:{
                     email,
                 }
@@ -84,6 +88,15 @@ export class UserServices {
         try {
             const user = await this.findByEmail(email)
             return !!user
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async createBalance(userId: string) {
+        try {
+            const balancesServices = new BalancesServices()
+            return await balancesServices.create(userId)
         } catch (error) {
             throw error
         }
