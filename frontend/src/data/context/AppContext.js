@@ -1,47 +1,58 @@
 import { createContext, useEffect, useState } from "react";
 import { useAuth } from "../hook/useAuth";
+import api from '../../axios'
+
 
 const AppContext = createContext({})
 
 export function AppContextProvider(props) {
 
-    const {user, sair, setUser, alteraSaldoUsuario} = useAuth()
-    const [lancamentos, setLancamentos] = useState([])
-    const [saldo, setSaldo] = useState(0)
+    const {user, logout, setUser} = useAuth()
+    const [listTransactions, setListTransactions] = useState([])
+    const [balance, setBalance] = useState(0)
 
-    function gravarLancamento(dados) {
+    async function saveRelease(data) {
+        try {
+            
+            const valueResult = parseFloat(data.value).toFixed(2)
 
-        const valor = dados.tipo === 'D' ? parseFloat(-dados.valor) : parseFloat(+dados.valor)
-        const novoLancamento = {
-            data: dados.data,
-            descricao: dados.descricao,
-            tipo: dados.tipo,
-            valor,
-            user: user.email
+            const value = data.type === 'D' ? -valueResult : +valueResult
+
+            const newTransaction = {
+                date: data.date,
+                description: data.description,
+                type: data.type,
+                value,
+                status: true,
+                user_id: user.id
+            }
+
+            const response = await api.saveTransaction(newTransaction)
+            await getListTransactions()
+            return response
+        } catch (error) {
+            throw error
         }
-        const arrTemp = lancamentos
-        arrTemp.push(novoLancamento) 
-        setLancamentos(arrTemp)
-
-        const novoSaldo = saldo + valor
-        setSaldo(novoSaldo)
-        setUser({...user, saldo: novoSaldo})
-        alteraSaldoUsuario(novoSaldo)
     }
 
-    useEffect(() => {
-        if(!user) {
-            sair()
-            return
+    async function getListTransactions() {
+        try {
+            const {data} = await api.getTransactions()
+            setListTransactions(data)
+        } catch (error) {
+            throw error
         }
-        setSaldo(user.saldo)
-    }, [user])
+    }
+
+    useEffect(async () => {
+        await getListTransactions()
+    }, [])
 
     return (
         <AppContext.Provider value={{
-            gravarLancamento,
-            lancamentos,
-            saldo
+            saveRelease,
+            listTransactions,
+            balance
         }}>
             {props.children}
         </AppContext.Provider>

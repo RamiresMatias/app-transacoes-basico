@@ -10,6 +10,8 @@
 - Frontend
 > - React
 > - Axios
+> - Tailwind css
+> - Cookie Js
 
 - Backend
 > - Typescript

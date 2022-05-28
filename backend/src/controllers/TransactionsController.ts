@@ -7,9 +7,9 @@ export class TransactionsController {
     async create(request: Request, response: Response) {
         try {
             const transactionsServices = new TransactionsServices()
-            const transactionData = request.body
-            const transaction = await transactionsServices.create(transactionData)
-            return response.json(transaction) 
+            const {transaction} = request.body
+            const transactionCreated = await transactionsServices.create(transaction)
+            return response.json(transactionCreated) 
         } catch (error) {
             return response.status(400).send(error)
         }

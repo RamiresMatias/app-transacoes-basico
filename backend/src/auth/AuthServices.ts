@@ -8,7 +8,7 @@ export class AuthServices {
         try {
 
             const userServices = new UserServices()
-
+            
             const user = await userServices.findByEmail(email)
             if(!user) throw 'Usuário não encontrado'
             

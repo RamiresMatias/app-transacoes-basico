@@ -1,16 +1,17 @@
-import '../styles/auth.css'
-import AuthInput from '../components/AuthInput'
 import { useState } from 'react'
 import { useAuth } from '../data/hook/useAuth'
+import { WarningIcon } from "../components/icons/index"
+import AuthInput from '../components/auth/AuthInput'
 
 export default function Auth() {
 
-    const [senha, setSenha] = useState(null)
-    const [confirmaSenha, setConfirmaSenha] = useState(null)
-    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [email, setEmail] = useState('')
     const [error, setError] = useState()
-    const [isCadastrar, setIsCadastrar] = useState(false)
-    const {login, cadastrar} = useAuth()
+    const [isRegister, setIsRegister] = useState(false)
+    const [mode, setMode] = useState('login')
+    const {login, register} = useAuth()
 
     function showError(msg) {
         console.log({...msg});
@@ -18,73 +19,98 @@ export default function Auth() {
         setTimeout(() => setError(null), 5000)
     }
 
-    async function submit(tipo) {
+    async function submit() {
         try {
-            if(tipo === 'login') {
-                await login(email, senha)
+            if(mode === 'login') {
+                await login(email, password)
             } else {
-                await cadastrar(email, senha, confirmaSenha)
-                setIsCadastrar(false)
+                await register(email, password, confirmPassword)
+                setIsRegister(false)
             }
         } catch (error) {
             showError(error)
         }
     }
-
-    const titulo = isCadastrar ? 'Cadastrar' : 'Login'
   
     return (
-        <div className="auth">
-            <div className="card-auth">
-                <div className='card-header-auth'>
-                    <h1 className='title'>{titulo}</h1>
-                </div>
-                <div className='card-content-auth'>
-                    {error ? (
-                        <div className='error'>
-                            {error}
-                        </div>
-                    ): false}
-                    <AuthInput 
-                        titulo="E-mail" 
-                        tipo="email" 
-                        valor={email} 
-                        alterarValor={setEmail}
-                        placeholder="Digite seu e-mail"
-                    />
-                    <AuthInput 
-                        titulo="Senha" 
-                        tipo="password" 
-                        valor={senha} 
-                        alterarValor={setSenha}
-                        placeholder="Digite sua senha"
-                    />
-                    {
-                        isCadastrar ? (
-                            <AuthInput 
-                                titulo="Confirme sua senha" 
-                                tipo="password" 
-                                valor={confirmaSenha} 
-                                alterarValor={setConfirmaSenha}
-                                placeholder="Digite sua senha novamente"
-                            />
-                        ) : false
-                    }
-                    {
-                        !isCadastrar ? (
-                            <>
-                                <button className='button-gravar' onClick={() => submit('login')}>Login</button>
-                                <button className='button-blue' onClick={() => setIsCadastrar(true)}>Cadastrar uma conta</button>
-                            </>
-                        ) : (
-                            <>
-                                <button className='button-gravar' onClick={() => submit()}>Salvar</button>
-                                <button className='button-blue' onClick={() => setIsCadastrar(false)}>Já possuo conta, fazer login</button>
-                            </>
-                        )
-                    }
-                   
-                </div>
+        <div className={`
+        flex h-screen items-center justify-center
+        `}>
+            <div className="hidden md:block md:w-1/2">
+                <img 
+                    src="https://cdn.pixabay.com/photo/2016/02/16/16/57/login-1203603_960_720.png" 
+                    alt="Imagem da Tela de autenticação" 
+                    className="h-screen w-full object-cover"
+                />
+            </div>
+            <div className={`md:w-1/2 w-full m-10`}>
+                <h1 className={`
+                    text-3xl font-bold mb-5
+                `}>
+                    {mode === 'login' ? 'Entre com a sua conta' : 'Registre-se na plataforma'}
+                </h1>
+
+                {error ? (
+                    <div className={`
+                        bg-red-400 text-white py-3 px-5 my-2
+                        border border-red-800 rounded-lg
+                        flex items-center
+                    `}>
+                        {WarningIcon}
+                        <span className="ml-3">{error}</span>
+                    </div>
+                ) : false}
+
+                <AuthInput
+                    label="Email"
+                    value={email}
+                    type={'email'}
+                    changeValue={setEmail}
+                    required
+                />
+                <AuthInput
+                    label="Senha"
+                    type={'password'}
+                    value={password}
+                    changeValue={setPassword}
+                    required
+                />
+
+                <AuthInput
+                    label="Confirme a Senha"
+                    type={'password'}
+                    value={confirmPassword}
+                    notRendering={mode === 'login'}
+                    changeValue={setConfirmPassword}
+                    required
+                />
+
+                <button onClick={submit} className={`
+                    w-full bg-indigo-500 hover:bg-indigo-400 text-white
+                    rounded-lg px-4 py-3 mt-6
+                `}>
+                    {mode === 'login' ? 'Entrar' : 'Registre-se'}
+                </button>
+
+                <hr className="my-6 border-gray-300 w-full"/>
+
+                {mode === 'login' ? (
+                    <p className="text-center">
+                        <a onClick={() => setMode('register')} className={`
+                        text-blue-500 hover:text-blue-700 font-semibold
+                        cursor-pointer`}>
+                            Criar uma conta gratuitamente?
+                        </a>
+                    </p>
+                ): (
+                    <p className="text-center">
+                        <a onClick={() => setMode('login')} className={`
+                        text-blue-500 hover:text-blue-700 font-semibold
+                        cursor-pointer`}>
+                            Entre com suas credenciais?
+                        </a>
+                    </p>
+                )}
             </div>
         </div>
     )

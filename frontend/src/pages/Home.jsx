@@ -1,10 +1,12 @@
-import Layout from '../components/Layout'
-import '../styles/home.css'
+import Layout from '../components/templates/Layout'
+
 
 export default function Home() {
     return (
         <Layout>
-            <h1>Home</h1>
+            <div className='h-screen w-full'>
+                <h1>Home</h1>
+            </div>
         </Layout>
     )
 }

@@ -1,75 +1,83 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from '../../axios'
+import cookies from 'js-cookie'
 
 const AuthContext = createContext({})
+
+function manageCookie(logged, expires) {
+    if(logged) {
+        cookies.set('user-auth', logged, {
+            expires: 1/56,
+        })
+    } else {
+        cookies.remove('user-auth')
+    }
+}
 
 export function AuthContextProvider(props) {
 
     const [user, setUser] = useState()
-    const [users, setUSers] = useState([])
     const history = useNavigate()
+    const [loading, setLoading] = useState(true)
     
-
     async function login(email, password) {
-
-        const user = recuperaUsuarioLocal(email)
-
-        if(!user) {
-            throw "Usuário não encontrado!"
-        }
-
-        if(user.password === password) {
-            setUser({email, password, saldo: user.saldo})
+        try {
+            setLoading(true)
+            const {data} = await api.signin(email, password)
+            await setUpSession(data)
             history('/')
-        } 
-
-        if(user.password !== password){
-            throw "Senha incorreta! Tenta novamente"
+        } catch (error) {
+            await setUpSession(false, null)
+            throw error?.response.data ?? 'Erro ao realizar login'
+        } finally {
+            setLoading(false)
         }
-
-    }
-    async function cadastrar(email, password, confirmPassword) {
-
-        if(password !== confirmPassword) throw 'As senhas não coincidem!'
-
-        const isExists = recuperaUsuarioLocal(email)
-        if(isExists) throw "Já existe um usuário com esse e-mail"
-
-        const novoUsuario = {email, password, saldo: 4000}
-
-        users.push(novoUsuario)
-        setUser(novoUsuario)
-        history('/')
     }
 
-    function alteraSaldoUsuario(valor) {
-        const index = users.findIndex(el => el.email === user.email)
-        users[index].saldo = valor
+    async function register(email, password, confirmPassword) {
+
+    
     }
 
-    function sair() {
-        setUser(null)
+    function logout() {
+        setUpSession(null)
         history('/autenticacao')
     }
 
-    function recuperaUsuarioLocal(email) {
-        return users.find(user => user.email === email)
+    async function setUpSession(user) {
+        if(user) {
+            setUser(user)
+            manageCookie(true, user.exp)
+            setLoading(false)
+            sessionStorage.setItem('user', JSON.stringify(user))
+            return user.email
+        }else {
+            setUser(null)
+            manageCookie(false, null)
+            setLoading(false)
+            sessionStorage.removeItem('user')
+            return false
+        }
     }
 
-
     useEffect(() => {
-        if(!user) sair()
-        return
-    }, [user])
+        const isCookies = cookies.get('user-auth')
+        const user = JSON.parse(sessionStorage.getItem('user'))
+        setUser(user)
+
+        if(!user && !isCookies) history('/autenticacao')
+        
+    }, [])
+
 
     return (
         <AuthContext.Provider value={{
             user,
             login,
-            cadastrar,
-            sair,
-            setUser,
-            alteraSaldoUsuario
+            register,
+            logout,
+            setUser,     
         }}>
             {props.children}
         </AuthContext.Provider>

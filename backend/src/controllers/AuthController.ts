@@ -9,7 +9,6 @@ export class AuthController {
             const authService = new AuthServices()
             const {email, password} = request.body
             const autenticacao = await authService.signin(email, password)
-
             return response.json(autenticacao)
         } catch (error) {
             return response.status(400).send(error)

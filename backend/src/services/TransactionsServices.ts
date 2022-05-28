@@ -26,21 +26,20 @@ export class TransactionsServices {
 
     async create(transaction: TransactionProps): Promise<TransactionProps> {
         try {
-            
             const transactionSave = await prismaClient.transaction.create({
                 data: {
                     date: new Date(transaction.date),
                     type: transaction.type,
                     description: transaction.description,
                     value: transaction.value,
-                    status: transaction.status
+                    status: transaction.status,
                 }
             })
-
             await this.createUserRelease(transactionSave.id, Operation.CREATE, transaction.user_id)
     
             return transactionSave
         } catch (error) {
+            console.log(error)
             throw error
         }
     }
@@ -57,6 +56,7 @@ export class TransactionsServices {
     
             return userRelease
         } catch (error) {
+            console.log(error)
             throw error
         }
     }
@@ -65,6 +65,7 @@ export class TransactionsServices {
         try {
             return prismaClient.transaction.findMany()
         } catch (error) {
+            console.log(error)
             throw error
         }
     }
@@ -88,6 +89,7 @@ export class TransactionsServices {
 
             return transactionUpdate
         } catch (error) {
+            console.log(error)
             throw error
         }
     }

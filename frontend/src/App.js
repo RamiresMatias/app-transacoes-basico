@@ -1,23 +1,24 @@
-import './app.css';
 import {Route, Routes} from 'react-router-dom'
 import Home from './pages/Home';
-import ContasPagar from './pages/ContasPagar';
-import ContasReceber from './pages/ContasReceber';
-import Extrato from './pages/Extrato';
+import Pay from './pages/Pay';
+import Receive from './pages/Receive';
+import Extract from './pages/Extract';
 import Auth from './pages/Auth';
+
 import { AuthContextProvider } from './data/context/AuthContext';
 import { AppContextProvider } from './data/context/AppContext';
 
+
 export default function App() {
   return (
-    <div className="app">
+    <div>
       <AuthContextProvider>
         <AppContextProvider>
           <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/contas-pagar" element={<ContasPagar/>}/>
-            <Route path="/contas-receber" element={<ContasReceber/>}/>
-            <Route path="/extrato" element={<Extrato/>}/>
+            <Route path="/contas-pagar" element={<Pay/>}/>
+            <Route path="/contas-receber" element={<Receive/>}/>
+            <Route path="/extrato" element={<Extract/>}/>
             <Route path="/autenticacao" element={<Auth/>}/>
           </Routes>
         </AppContextProvider>
@@ -25,4 +26,3 @@ export default function App() {
     </div>
   );
 }
-
