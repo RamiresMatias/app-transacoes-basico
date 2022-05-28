@@ -1,5 +1,6 @@
 import {Router} from 'express'
 import { AuthController } from '../controllers/AuthController'
+import { BalanceController } from '../controllers/BalanceController'
 import { TransactionsController } from '../controllers/TransactionsController'
 import { UserController } from '../controllers/UserController'
 
@@ -8,6 +9,7 @@ const router = Router()
 const userController = new UserController()
 const transactionsController = new TransactionsController()
 const authController = new AuthController()
+const balanceController = new BalanceController()
 
 router.route('/signin')
     .post(authController.signin)
@@ -28,6 +30,10 @@ router.route('/users/:id')
 router.route('/transactions')
     .post(transactionsController.create)
     .get(transactionsController.listTransactions)
+
+
+router.route('/balance/:id')
+    .get(balanceController.getBalance)
 
 
 router.route('/transactions/:id')

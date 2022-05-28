@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { useAuth } from "../hook/useAuth";
+import { useNavigate } from "react-router-dom";
+
 import api from '../../axios'
 
 
@@ -7,6 +9,7 @@ const AppContext = createContext({})
 
 export function AppContextProvider(props) {
 
+    const history = useNavigate()
     const {user, logout, setUser} = useAuth()
     const [listTransactions, setListTransactions] = useState([])
     const [balance, setBalance] = useState(0)
@@ -44,9 +47,19 @@ export function AppContextProvider(props) {
         }
     }
 
-    useEffect(async () => {
-        await getListTransactions()
-    }, [])
+    async function getBalance() {
+        try {
+            const {data} = await api.getBalance(user.id)
+            setBalance(parseFloat(data.value).toFixed(2))
+        } catch (error) {
+            throw error
+        }
+    }
+
+    useEffect(() => {
+        getListTransactions()
+        getBalance()
+    }, [null])
 
     return (
         <AppContext.Provider value={{

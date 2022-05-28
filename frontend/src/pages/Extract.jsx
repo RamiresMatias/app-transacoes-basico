@@ -9,7 +9,7 @@ export default function Extract() {
             <div className={`
                 flex
                 justify-center align-center  
-                w-full h-screen py-5
+                w-full h-full py-5
             `}>
                 <Table type={['D', 'R']}/>
             </div>

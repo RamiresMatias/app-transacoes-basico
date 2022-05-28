@@ -16,8 +16,18 @@ function saveTransaction(transaction) {
     return api.post('/transactions', {transaction})
 }
 
+function register(user) {
+    return api.post('/users', {user})
+}
+
+function getBalance(userId) {
+    return api.get(`balance/${userId}`)
+}
+
 export default {
     signin,
     getTransactions,
-    saveTransaction
+    saveTransaction,
+    register,
+    getBalance
 }

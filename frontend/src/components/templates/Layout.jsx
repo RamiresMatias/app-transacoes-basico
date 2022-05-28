@@ -10,8 +10,8 @@ export default function Layout(props) {
             <Sidebar />
             <div className={`
                 flex flex-col 
-                w-full h-full p-7
-                bg-gray-400 dark:bg-gray-800
+                w-full h-full
+                bg-gradient-to-r from-cyan-500 to-blue-500 dark:bg-gray-800
             `}>
                 <Topbar title={props.title} subtitle={props.subtitle} />
                 <Content>

@@ -13,6 +13,7 @@ export default function Sidebar(){
             bg-gray-200 text-gray-700
             dark:bg-gray-900 
             dark:text-gray-200
+            h-screen
             `}>
             <div className={`
                 flex flex-col items-center justify-center

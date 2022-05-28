@@ -11,7 +11,7 @@ import { AppContextProvider } from './data/context/AppContext';
 
 export default function App() {
   return (
-    <div>
+    <div className='h-full'>
       <AuthContextProvider>
         <AppContextProvider>
           <Routes>

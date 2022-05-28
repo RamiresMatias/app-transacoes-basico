@@ -11,7 +11,7 @@ export default function Pay() {
     return (
         <Layout>
             <Card title="Contas à Pagar" type="D" saveRelease={saveRelease}/>
-            <Table type={['D']} isEdit/>
+            <Table type={['D']} isEdit colorText='text-red-600'/>
         </Layout>
     )
 }

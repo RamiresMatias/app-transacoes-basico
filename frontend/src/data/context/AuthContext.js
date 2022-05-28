@@ -35,9 +35,17 @@ export function AuthContextProvider(props) {
         }
     }
 
-    async function register(email, password, confirmPassword) {
+    async function register(newUser) {
+        try {
+            const {password, confirmPassword} = newUser
+            if(password !== confirmPassword) throw 'As senhas não coincidem!'
 
-    
+            await api.register({...newUser, status: true})
+            history('/autenticacao')
+
+        } catch (error) {
+            throw error?.response.data ?? 'Erro ao realizar cadastro'
+        }
     }
 
     function logout() {
@@ -63,10 +71,16 @@ export function AuthContextProvider(props) {
 
     useEffect(() => {
         const isCookies = cookies.get('user-auth')
-        const user = JSON.parse(sessionStorage.getItem('user'))
-        setUser(user)
+        const invalid = [false, 'false']
 
-        if(!user && !isCookies) history('/autenticacao')
+        const user = JSON.parse(sessionStorage.getItem('user'))
+
+        if(invalid.includes(isCookies) || !user) {
+            setUpSession(null)
+            history('/autenticacao')
+        }
+
+        setUser(user)
         
     }, [])
 

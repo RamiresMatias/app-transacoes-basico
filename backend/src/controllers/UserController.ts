@@ -8,8 +8,8 @@ export class UserController {
     async save(request: Request, response: Response) {
         try {
             const userServices = new UserServices()
-            const dataUser = request.body
-            const userCreated = await userServices.save(dataUser) 
+            const {user} = request.body
+            const userCreated = await userServices.save(user) 
             
             return response.json(userCreated) 
         } catch (error) {
@@ -20,10 +20,10 @@ export class UserController {
     async update(request: Request, response: Response) {
         try {
             const userServices = new UserServices()
-            const dataUserUpdated = request.body
+            const {user} = request.body
             const idUser = request.params.id
 
-            const userUpdated = await userServices.update(dataUserUpdated, idUser)
+            const userUpdated = await userServices.update(user, idUser)
 
             return response.json(userUpdated)
         } catch (error) {

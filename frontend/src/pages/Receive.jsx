@@ -12,7 +12,7 @@ export default function Receive() {
     return (
         <Layout>
             <Card title="Contas à Receber" type="R" saveRelease={saveRelease}/>
-            <Table type={['R']} isEdit/>
+            <Table type={['R']} isEdit colorText="text-emerald-600"/>
         </Layout>
     )
 }

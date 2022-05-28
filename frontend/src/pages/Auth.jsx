@@ -8,13 +8,12 @@ export default function Auth() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
     const [error, setError] = useState()
-    const [isRegister, setIsRegister] = useState(false)
     const [mode, setMode] = useState('login')
     const {login, register} = useAuth()
 
     function showError(msg) {
-        console.log({...msg});
         setError(msg)
         setTimeout(() => setError(null), 5000)
     }
@@ -24,12 +23,26 @@ export default function Auth() {
             if(mode === 'login') {
                 await login(email, password)
             } else {
-                await register(email, password, confirmPassword)
-                setIsRegister(false)
+                const newUser = {
+                    username, 
+                    email, 
+                    password, 
+                    confirmPassword
+                }
+                await register(newUser)
+                resetForm()
             }
         } catch (error) {
             showError(error)
         }
+    }
+
+    function resetForm() {
+        setPassword('')
+        setConfirmPassword('')
+        setEmail('')
+        setUsername('')
+        setMode('login')
     }
   
     return (
@@ -60,6 +73,15 @@ export default function Auth() {
                         <span className="ml-3">{error}</span>
                     </div>
                 ) : false}
+
+                <AuthInput
+                    label="Nome de usuário"
+                    type={'text'}
+                    value={username}
+                    notRendering={mode === 'login'}
+                    changeValue={setUsername}
+                    required
+                />
 
                 <AuthInput
                     label="Email"

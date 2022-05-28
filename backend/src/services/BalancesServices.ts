@@ -21,4 +21,16 @@ export class BalancesServices {
             throw error
         }
     }
+
+    async getBalance(user_id: string): Promise<BalancesData> {
+        try {
+            return await prismaClient.balances.findFirst({
+                where:{
+                    user_id,
+                }
+            })
+        } catch (error) {
+            throw error
+        }
+    }
 }

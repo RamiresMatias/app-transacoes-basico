@@ -17,8 +17,8 @@ export class UserServices {
 
         try {
             const newUser = {...dataUser}
-
-            if(await this.isExists(newUser.email)) throw 'Já existe um usuário com esse e-mail!!!'
+            const isExists = await this.isExists(newUser.email)
+            if(isExists) throw 'Já existe um usuário com esse e-mail!!!'
 
             newUser.password = this.excryptedPassword(newUser.password)
             delete newUser.confirmPassword
@@ -33,6 +33,7 @@ export class UserServices {
 
             return userSave
         } catch (error) {
+            console.log(error)
             throw error
         }
     }
