@@ -16,16 +16,12 @@ export function AppContextProvider(props) {
 
     async function saveRelease(data) {
         try {
-            
-            const valueResult = parseFloat(data.value).toFixed(2)
-
-            const value = data.type === 'D' ? -valueResult : +valueResult
 
             const newTransaction = {
                 date: data.date,
                 description: data.description,
                 type: data.type,
-                value,
+                value: parseFloat(data.value).toFixed(2),
                 status: true,
                 user_id: user.id
             }
@@ -40,7 +36,7 @@ export function AppContextProvider(props) {
 
     async function getListTransactions() {
         try {
-            const {data} = await api.getTransactions()
+            const {data} = await api.getTransactions(user.id)
             setListTransactions(data)
         } catch (error) {
             throw error

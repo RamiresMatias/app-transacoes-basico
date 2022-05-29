@@ -26,13 +26,17 @@ export class TransactionsServices {
 
     async create(transaction: TransactionProps): Promise<TransactionProps> {
         try {
+
+            const value = transaction.type === 'D' ? -transaction.value : +transaction.value
+
             const transactionSave = await prismaClient.transaction.create({
                 data: {
                     date: new Date(transaction.date),
                     type: transaction.type,
                     description: transaction.description,
-                    value: transaction.value,
+                    value,
                     status: transaction.status,
+                    user_id: transaction.user_id,
                 }
             })
             await this.createUserRelease(transactionSave.id, Operation.CREATE, transaction.user_id)
@@ -61,16 +65,21 @@ export class TransactionsServices {
         }
     }
 
-    async listTransactions(): Promise<TransactionProps[]> {
+    async listTransactions(user_id: string | undefined): Promise<TransactionProps[]> {
         try {
-            return prismaClient.transaction.findMany()
+            return prismaClient.transaction.findMany({
+                where: {
+                    user_id,
+                    status: true
+                }
+            })
         } catch (error) {
             console.log(error)
             throw error
         }
     }
 
-    async update(transaction: TransactionProps, id: string): Promise<TransactionProps> {
+    async update(transaction: TransactionProps, id: string | undefined): Promise<TransactionProps> {
         try {
             const transactionUpdate = await prismaClient.transaction.update({
                 data: {

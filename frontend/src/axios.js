@@ -8,8 +8,8 @@ function signin(email, password) {
     return api.post('/signin', {email, password})
 }
 
-function getTransactions() {
-    return api.get('/transactions')
+function getTransactions(userId) {
+    return api.get(`/transactions/${userId}`)
 }
 
 function saveTransaction(transaction) {

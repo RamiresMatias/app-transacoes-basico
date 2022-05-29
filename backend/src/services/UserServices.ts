@@ -102,5 +102,15 @@ export class UserServices {
             throw error
         }
     }
+
+    async listUsers(): Promise<UserProps[]> {
+        try {
+            const users = await prismaClient.users.findMany()
+            return users            
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
     
 }

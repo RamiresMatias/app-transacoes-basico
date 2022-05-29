@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_URL")
 }
 
 
@@ -15,6 +16,7 @@ model Users {
   password      String
   status        Boolean
   balances      Balances[]
+  transactions  Transaction[]
 
   @@map("users")
 }
@@ -34,6 +36,8 @@ model Transaction {
   date          DateTime     
   type          String       
   description   String
+  user_id       String 
+  user          Users          @relation(fields: [user_id], references: [id])
   value         Decimal       @db.Decimal(10, 2)
   created_at    DateTime      @default(now())
   updated_at    DateTime      @default(now())

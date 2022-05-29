@@ -15,4 +15,16 @@ export class BalanceController {
             return response.status(400).send(error)
         }
     }
+
+    async calculateBalance(request: Request, response: Response) {
+        try {
+            const balanceServices = new BalancesServices()
+
+            await balanceServices.calculateBalance() 
+            
+            return response.json({ok: true}) 
+        } catch (error) {
+            return response.status(400).send(error)
+        }
+    }
 }

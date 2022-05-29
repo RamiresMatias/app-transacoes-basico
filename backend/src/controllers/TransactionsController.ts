@@ -19,7 +19,8 @@ export class TransactionsController {
     async listTransactions(request: Request, response: Response) {
         try {
             const transactionsServices = new TransactionsServices()
-            const allTransactions = await transactionsServices.listTransactions() 
+            const id = request.params.id
+            const allTransactions = await transactionsServices.listTransactions(id) 
 
             return response.json(allTransactions)
         } catch (error) {

@@ -29,15 +29,19 @@ router.route('/users/:id')
     
 router.route('/transactions')
     .post(transactionsController.create)
-    .get(transactionsController.listTransactions)
 
 
 router.route('/balance/:id')
     .get(balanceController.getBalance)
 
+    router.route('/balance')
+    .post(balanceController.calculateBalance)
+
 
 router.route('/transactions/:id')
     .put(transactionsController.update)
+    .get(transactionsController.listTransactions)
+
 
 
 export {router}
