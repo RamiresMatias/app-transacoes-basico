@@ -36,6 +36,7 @@ export function AppContextProvider(props) {
 
     async function getListTransactions() {
         try {
+            if(!user) return
             const {data} = await api.getTransactions(user.id)
             setListTransactions(data)
         } catch (error) {
@@ -45,6 +46,7 @@ export function AppContextProvider(props) {
 
     async function getBalance() {
         try {
+            if(!user) return
             const {data} = await api.getBalance(user.id)
             setBalance(parseFloat(data.value).toFixed(2))
         } catch (error) {
@@ -55,13 +57,14 @@ export function AppContextProvider(props) {
     useEffect(() => {
         getListTransactions()
         getBalance()
-    }, [null])
+    }, [user])
 
     return (
         <AppContext.Provider value={{
             saveRelease,
             listTransactions,
-            balance
+            balance,
+            getListTransactions
         }}>
             {props.children}
         </AppContext.Provider>

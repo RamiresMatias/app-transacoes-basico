@@ -8,9 +8,10 @@ export default function CardProfile() {
         <div className={`
             rounded bg-white 
             w-60 h-20 flex 
-            px-4
-            text-md text-gray-700
+            px-2 py-4
+            text-sm text-gray-700
             flex-col align-center justify-around
+            flex-wrap
         `}>
             <p>{user.username}</p>
             <p>{user.email}</p>

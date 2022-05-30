@@ -4,6 +4,7 @@ import Table from "../components/templates/Table"
 
 
 import { useApp } from "../data/hook/useApp"
+import { useEffect } from "react"
 
 export default function Receive() {
 

@@ -33,6 +33,7 @@ export class AuthServices {
                 token: jwt.encode(payload, authSecret)
             }
         } catch (error) {
+            console.log(error)
             throw error
         }
     }

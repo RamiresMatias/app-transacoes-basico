@@ -6,6 +6,9 @@ export default function Table(props) {
 
     const formataData = (data) => new Date(data).toLocaleDateString('pt-br')
 
+    async function editTransaction(row) {
+        // Lógica para editar
+    }
    
     function renderizaTabela() {
         return listTransactions
@@ -20,7 +23,11 @@ export default function Table(props) {
                         <th className="px-6 py-4">{row.description}</th>
                         <th className="px-6 py-4">{row.type === 'D' ? 'Despesa' : 'Receita'}</th>
                         {props.isEdit ? <td className="px-6 py-4 text-right">
-                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <button 
+                                type="button" 
+                                onClick={() => editTransaction(row)}
+                                className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+                            >Editar</button>
                         </td>: false}
                     </tr>
                 )
@@ -53,7 +60,7 @@ export default function Table(props) {
                             Tipo
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            <span className="sr-only">Edit</span>
+                            <span className="sr-only">Editar</span>
                         </th>
                     </tr>
                 </thead>

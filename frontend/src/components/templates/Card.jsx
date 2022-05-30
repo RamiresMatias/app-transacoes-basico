@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 export default function Card(props) {
     
+    const [id, setId] = useState()
     const [date, setDate] = useState()
     const [description, setDescription] = useState()
     const [value, setValue] = useState()
@@ -11,16 +12,8 @@ export default function Card(props) {
         props.saveRelease({date, description, value, type: props.type})
     }
 
-    const handleDate = (e) => {
-        setDate(e.target.value)
-    }
-
-    const handleDescription = (e) => {
-        setDescription(e.target.value)
-    }
-
-    const handleValue = (e) => {
-        setValue(e.target.value)
+    async function editTransaction() {
+        props.saveRelease({id: date, description, value, type: props.type})
     }
 
     const bg = props.type === 'D' ? 'bg-red-400' : 'bg-blue-400' 
@@ -39,7 +32,7 @@ export default function Card(props) {
                 <input
                     type='text'
                     required
-                    onChange={handleDescription}
+                    onChange={(e) => setDescription(e.target.value)}
                     value={description}
                     placeholder='Digite a descrição'
                     className={`
@@ -54,7 +47,7 @@ export default function Card(props) {
                 <input
                     type='number'
                     required
-                    onChange={handleValue}
+                    onChange={(e) => setValue(e.target.value)}
                     value={value}
                     placeholder='Digite a valor' 
                     className={`
@@ -69,7 +62,7 @@ export default function Card(props) {
                 <input
                     type='date'
                     required
-                    onChange={handleDate}
+                    onChange={(e) => setDate(e.target.value)}
                     value={date}
                     placeholder='Selecione a data'
                     className={`
