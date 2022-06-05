@@ -1,19 +1,18 @@
 import { useApp } from "../../data/hook/useApp"
+import moment from 'moment'
 
 export default function Table(props) {
 
     const {listTransactions} = useApp()
 
-    const formataData = (date) => new Date(date).toLocaleDateString('pt-br')
+    const formataData = (date) => {
+        return moment(date).utc().format('DD/MM/YYYY')
+    }
 
     const isSameDate = (date) => {
-        const nowDate = new Date().getDate()
-        const nowMonth = new Date().getMonth() + 1
-
-        const dateDay = new Date(date).getDate()
-        const dateMonth = new Date(date).getMonth() + 1
-        console.log(!(dateDay === nowDate && dateMonth === nowMonth));
-        return !(dateDay === nowDate && dateMonth === nowMonth)
+        const now = moment().utc().format('DD/MM/YYYY')
+        const dateRelease = moment(date).utc().format('DD/MM/YYYY')
+        return !(moment(dateRelease).isSameOrAfter(now))
     }
    
     function renderizaTabela() {

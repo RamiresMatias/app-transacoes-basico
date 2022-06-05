@@ -1,10 +1,13 @@
+import moment from "moment"
 import { useApp } from "../../data/hook/useApp"
 
 export default function TableExtract(props) {
 
     const {listTransactions} = useApp()
 
-    const formataData = (data) => new Date(data).toLocaleDateString('pt-br')
+    const formataData = (date) => {
+        return moment(date).utc().format('DD/MM/YYYY')
+    }
 
    
     function renderizaTabela() {
