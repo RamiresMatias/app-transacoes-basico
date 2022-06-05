@@ -1,41 +1,26 @@
 import { useApp } from "../../data/hook/useApp"
 
-export default function Table(props) {
+export default function TableExtract(props) {
 
     const {listTransactions} = useApp()
 
-    const formataData = (date) => new Date(date).toLocaleDateString('pt-br')
+    const formataData = (data) => new Date(data).toLocaleDateString('pt-br')
 
-    const isSameDate = (date) => {
-        const nowDate = new Date().getDate()
-        const nowMonth = new Date().getMonth() + 1
-
-        const dateDay = new Date(date).getDate()
-        const dateMonth = new Date(date).getMonth() + 1
-        console.log(!(dateDay === nowDate && dateMonth === nowMonth));
-        return !(dateDay === nowDate && dateMonth === nowMonth)
-    }
    
     function renderizaTabela() {
         return listTransactions
             .filter(el => props.type.includes(el.type))
             .map((row, index) => {
+                const isDespesa = row.type === 'D'
+                const colorText = isDespesa ? 'text-red-900' : 'text-emerald-900'
             return ( 
                     <tr
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" 
                     key={index}>
                         <th className="px-6 py-4 border border-slate-300">{formataData(row.date)}</th>
-                        <th className={`px-6 py-4 font-medium border border-slate-300 ${props.colorText}`}>{row.value}</th>
+                        <th className={`px-6 py-4 font-medium border border-slate-300 ${colorText}`}>{row.value}</th>
                         <th className="px-6 py-4 border border-slate-300">{row.description}</th>
-                        <th className="px-6 py-4 border border-slate-300">{row.type === 'D' ? 'Despesa' : 'Receita'}</th>
-                        {props.isEdit ? <td className="px-6 py-4 text-center">
-                            <button 
-                                type="button" 
-                                onClick={() => props.editRelease(row)}
-                                disabled={isSameDate(row.date)}
-                                className="disabled:opacity-50 focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
-                            >Editar</button>
-                        </td>: false}
+                        <th className="px-6 py-4 border border-slate-300">{isDespesa ? 'Despesa' : 'Receita'}</th>
                     </tr>
                 )
             })
@@ -45,10 +30,10 @@ export default function Table(props) {
         <div className={`
             rounded-lg 
             flex flex-col justify-center align-center 
-            w-5/6 h-full 
-            p-1 bg-white border mt-6
+            w-full h-full 
+            w-5/6 bg-white border mt-6
         `}>
-            <h1 className="text-center text-4xl font-bold pt-3 pb-10 tracking-wide	">Lançamentos</h1>
+            <h1 className="text-center text-4xl font-bold pt-3 pb-10 tracking-wide">Lançamentos</h1>
             <table className={`
                 w-full h-full text-sm text-center text-gray-500 
                 dark:text-gray-400 border-collapse
@@ -66,9 +51,6 @@ export default function Table(props) {
                         </th>
                         <th scope="col" className="px-6 py-3 border border-slate-300">
                             Tipo
-                        </th>
-                        <th scope="col" className="px-6 py-3 border border-slate-300">
-                            Editar
                         </th>
                     </tr>
                 </thead>

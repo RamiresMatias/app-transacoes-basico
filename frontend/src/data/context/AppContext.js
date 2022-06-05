@@ -34,6 +34,17 @@ export function AppContextProvider(props) {
         }
     }
 
+    async function update(data) {
+        try {
+
+            const response = await api.update(data, data.id)
+            await getListTransactions()
+            return response
+        } catch (error) {
+            throw error
+        }
+    }
+
     async function getListTransactions() {
         try {
             if(!user) return
@@ -62,6 +73,7 @@ export function AppContextProvider(props) {
     return (
         <AppContext.Provider value={{
             saveRelease,
+            update,
             listTransactions,
             balance,
             getListTransactions

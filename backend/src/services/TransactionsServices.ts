@@ -81,22 +81,19 @@ export class TransactionsServices {
 
     async update(transaction: TransactionProps, id: string | undefined): Promise<TransactionProps> {
         try {
-            const transactionUpdate = await prismaClient.transaction.update({
+
+            const transactionUpdated = await prismaClient.transaction.update({
                 data: {
-                    date: new Date(transaction.date),
-                    type: transaction.type,
-                    description: transaction.description,
-                    value: transaction.value,
-                    status: transaction.status
+                    ...transaction
                 },
                 where: {
                     id,
                 }
             })
+ 
+            await this.createUserRelease(transactionUpdated.id, Operation.UPDATE, transactionUpdated.user_id)
 
-            await this.createUserRelease(transactionUpdate.id, Operation.UPDATE, transaction.user_id)
-
-            return transactionUpdate
+            return transactionUpdated
         } catch (error) {
             console.log(error)
             throw error

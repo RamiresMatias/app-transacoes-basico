@@ -11,18 +11,16 @@ import { AppContextProvider } from './data/context/AppContext';
 
 export default function App() {
   return (
-    <div className='h-full'>
-      <AuthContextProvider>
-        <AppContextProvider>
-          <Routes>
-            <Route path="/" element={<Home/>}/>
-            <Route path="/contas-pagar" element={<Pay/>}/>
-            <Route path="/contas-receber" element={<Receive/>}/>
-            <Route path="/extrato" element={<Extract/>}/>
-            <Route path="/autenticacao" element={<Auth/>}/>
-          </Routes>
-        </AppContextProvider>
-      </AuthContextProvider>
-    </div>
+    <AuthContextProvider>
+      <AppContextProvider>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/contas-pagar" element={<Pay/>}/>
+          <Route path="/contas-receber" element={<Receive/>}/>
+          <Route path="/extrato" element={<Extract/>}/>
+          <Route path="/autenticacao" element={<Auth/>}/>
+        </Routes>
+      </AppContextProvider>
+    </AuthContextProvider>
   );
 }

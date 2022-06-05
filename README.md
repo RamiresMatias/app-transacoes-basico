@@ -2,8 +2,8 @@
 
 ## Descrição 📖
 
-- App de transações básico com tela de login e cadastro de usuário
-- Projeto básico desenvolvido para entrega de tarefas acadêmicas 
+- App de controle de gastos básico com tela de login e cadastro de usuário
+- Projeto básico desenvolvido como um projeto da faculdade
 
 ## Tecnologias 🖥️
 

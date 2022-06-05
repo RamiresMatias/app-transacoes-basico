@@ -1,22 +1,50 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Card(props) {
     
-    const [id, setId] = useState()
-    const [date, setDate] = useState()
-    const [description, setDescription] = useState()
-    const [value, setValue] = useState()
+    const dateEnUs = formatDateIso(null)
+    const [id, setId] = useState(null)
+    const [date, setDate] = useState(dateEnUs)
+    const [description, setDescription] = useState('')
+    const [value, setValue] = useState(0)
+
+    const [editMode, setEditMode] = useState(false)
 
     async function submit(e) {
         e.preventDefault()
         props.saveRelease({date, description, value, type: props.type})
     }
 
-    async function editTransaction() {
-        props.saveRelease({id: date, description, value, type: props.type})
+    function formatDateIso(date) {
+        const newDate = date ? new Date(date) : new Date()
+        return newDate.toISOString().split('T')[0]
     }
 
-    const bg = props.type === 'D' ? 'bg-red-400' : 'bg-blue-400' 
+    function setValuesRelease(transaction) {
+        setDescription(transaction.description)
+        setValue(transaction.value)
+        setId(transaction.id)
+        setDate(formatDateIso(transaction.date))
+    }
+
+    function submitEdit(e) {
+        e.preventDefault()
+        props.updateFn({id, date: new Date(date), description, value})
+        clearForm()
+    }
+
+    function clearForm() {
+        setDescription('')
+        setValue(0)
+    }
+
+    const bg = props.type === 'D' ? 'bg-red-400' : 'bg-blue-400'
+
+    useEffect(() => {
+        if(!props.releaseEdit) return
+        setEditMode(true)
+        setValuesRelease(props.releaseEdit)
+    }, [props?.releaseEdit])
 
     return (
         <div className="rounded flex flex-col h-full py-6 w-5/6 bg-white">
@@ -73,10 +101,10 @@ export default function Card(props) {
                 />
             </div>
             <div className={`flex flex-col text-xl px-6 mt-6`}>
-                <button onClick={submit} className={`
+                <button onClick={editMode ? submitEdit : submit} className={`
                     w-full bg-indigo-500 hover:bg-indigo-400 text-white
                     rounded-lg px-4 py-3 mt-6
-                `}>Salvar</button>
+                `}>{editMode ? 'Salvar alteração' : 'Salvar'}</button>
             </div>
     
         </div>

@@ -13,7 +13,7 @@ function getTransactions(userId) {
 }
 
 function saveTransaction(transaction) {
-    return api.post('/transactions', {transaction})
+    return api.post('/transactions', transaction)
 }
 
 function register(user) {
@@ -24,10 +24,15 @@ function getBalance(userId) {
     return api.get(`balance/${userId}`)
 }
 
+function update(transaction, id) {
+    return api.put(`/transactions/${id}`, transaction)
+}
+
 export default {
     signin,
     getTransactions,
     saveTransaction,
     register,
-    getBalance
+    getBalance,
+    update
 }
